@@ -7,12 +7,16 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
-var app = express(); 
-const db = require('./db/db');
-var user = require('./entities/users')(db.mongoose);
+var app = express();
+//const db = require('./db');
+//const user = require('./entities/users')(db.mongoose);
+//const dbl = require('./db/db');
+//var user1 = new user({name: "ere", pass: "123", email: "ad@r.ru", phone: 1234, role: "admin"});
+/*
 user.create({name: "Adl", pass: "123", email: "ad@r.ru", phone: 1234, role: "admin"}, function(err, doc) {
   console.log("create");
 });
+*/
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');

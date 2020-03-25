@@ -1,10 +1,11 @@
-'use strict'
+'use strict';
 
 module.exports = (mongoose) => {
 
   const Schema = mongoose.Schema;
   const ObjectId = Schema.ObjectId;
-  const User = new Schema({
+
+  var User = new Schema({
     name: String,
     pass: String,
     email: String,
@@ -13,4 +14,5 @@ module.exports = (mongoose) => {
   });
   console.log("create User");
   return mongoose.model('Users', User);
+
 }

@@ -1,26 +1,61 @@
-'use strict'
+'use strict';
 
-  const mongoose = require('mongoose');
-  const properties = {
-    port: process.env.PORT_DB || 'mongodb://localhost',
-    db_host: process.env.HOST_DB || '27017',
-    db_name: process.env.DB_NAME || 'adminka'
-  };
+module.exports = class db {
+    _db_connect;
+    constructor() {
+        this._db_connect = require('../db');
+    }
 
-  function getUrl() {
-    return properties.db_host + "/" + properties.db_name;
-  }
+    getMongoose() {
+        console.log(this._db_connect);
+        return this._db_connect.mongoose;
+    }
 
-  (() => {
-    mongoose.connect(getUrl(), 
-     {
-       useNewUrlParser: true,
-       useUnifiedTopology: true
-     });
-     console.log("connect to db on " + getUrl());
-   })();
+    create (model) {
+        model.save((err) => {
+            if (err) return console.log(err + "error");
+            console.log("save in db");
+        });
+    }
 
- exports.mongoose = mongoose;
+    remove (model) {
+        model.remove((err) => {
+            if (err) return console.log(err + "error");
+            console.log("remove");
+        });
+    }
+
+    remove (model, id) {
+        model.remove({_id: id}, (err) => {
+            if (err) return console.log(err + "error");
+            console.log("remove by id - " + id);
+        });
+    }
+
+    update(id, model, newModel) {
+        model.updateOne(model, newModel, (err) => {
+            if (err) return console.log(err + "error");
+            console.log("udpate from " + model + " to " + newModel);
+        });
+    }
+
+    getAll(model) {
+       return model.find({},  (err) => {
+            if (err) return console.log(err + "error");
+            console.log("find");
+        });
+    }
+
+    getById(model, id) {
+        return model.find(id, (err) => {
+            if (err) return console.log(err + "error");
+            console.log("find by id - " + id);
+        });
+    }
 
 
-  
+
+
+
+
+}
