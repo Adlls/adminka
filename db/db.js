@@ -7,7 +7,6 @@ module.exports = class db {
     }
 
     getMongoose() {
-        console.log(this._db_connect);
         return this._db_connect.mongoose;
     }
 
@@ -39,17 +38,17 @@ module.exports = class db {
         });
     }
 
-    getAll(model) {
-       return model.find({},  (err) => {
-            if (err) return console.log(err + "error");
-            console.log("find");
+     getAll(model) {
+       return  model.find({}, (err, docs) => {
+            if (err) return err;
+            return docs;
         });
     }
 
     getById(model, id) {
-        return model.find(id, (err) => {
-            if (err) return console.log(err + "error");
-            console.log("find by id - " + id);
+        return model.find(this._db_connect.mongoose.Types.ObjectId(id), (err, docs) => {
+            if (err) return err + "error";
+            return docs;
         });
     }
 

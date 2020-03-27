@@ -12,7 +12,6 @@ module.exports = (mongoose) => {
     phone: Number,
     role: String
   });
-  console.log("create User");
   return mongoose.model('Users', User);
 
 }
