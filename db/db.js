@@ -10,36 +10,29 @@ module.exports = class db {
         return this._db_connect.mongoose;
     }
 
-    create (model) {
-        model.save((err) => {
-            if (err) return console.log(err + "error");
-            console.log("save in db");
-        });
-    }
-
-    remove (model) {
-        model.remove((err) => {
-            if (err) return console.log(err + "error");
-            console.log("remove");
+    async create (model, nm) {
+        await model.create(nm, (err, docs) => {
+            if (err) return err + "error";
+            return docs;
         });
     }
 
     remove (model, id) {
-        model.remove({_id: id}, (err) => {
-            if (err) return console.log(err + "error");
-            console.log("remove by id - " + id);
+      return model.deleteOne({_id: this._db_connect.mongoose.Types.ObjectId(id) }, (err, result) => {
+            if (err) return err + "error";
+            return result;
         });
     }
 
-    update(id, model, newModel) {
-        model.updateOne(model, newModel, (err) => {
-            if (err) return console.log(err + "error");
-            console.log("udpate from " + model + " to " + newModel);
+    update(id, model, updateDataset) {
+        return model.findByIdAndUpdate(id, updateDataset, (err, docs) => {
+            if (err) return err + "error";
+            return docs;
         });
     }
 
      getAll(model) {
-       return  model.find({}, (err, docs) => {
+       return model.find({}, (err, docs) => {
             if (err) return err;
             return docs;
         });

@@ -9,7 +9,7 @@ module.exports = (mongoose) => {
     name: String,
     pass: String,
     email: String,
-    phone: Number,
+    phone: String,
     role: String
   });
   return mongoose.model('Users', User);
