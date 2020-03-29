@@ -4,10 +4,21 @@
      _db;
      _d;
      _users;
+     static _instance;
      constructor() {
-          this._d = require('../db/db');
+         if (users._instance) {
+             throw new Error("Instantiation failed: "+
+                 "use getUserDoc() instead of new.");
+         }
+         users._instance = this;
+         this._d = require('../db/db');
          this._db = new this._d();
          this._users = require('../entities/users')(this._db.getMongoose());
+     }
+
+     static getUserDoc() {
+         if (users._instance) return users._instance;
+         return users._instance = new users();
      }
 
      getAll() {
