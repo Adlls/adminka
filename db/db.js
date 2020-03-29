@@ -10,7 +10,7 @@ module.exports = class db {
         return this._db_connect.mongoose;
     }
 
-    async create (model, nm) {
+     async create (model, nm) {
         await model.create(nm, (err, docs) => {
             if (err) return err + "error";
             return docs;

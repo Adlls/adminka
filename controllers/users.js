@@ -2,10 +2,11 @@
 
  module.exports = class users {
      _db;
+     _d;
      _users;
      constructor() {
-         var d = require('../db/db');
-         this._db = new d();
+          this._d = require('../db/db');
+         this._db = new this._d();
          this._users = require('../entities/users')(this._db.getMongoose());
      }
 
