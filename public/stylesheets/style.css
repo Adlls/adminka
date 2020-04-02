@@ -3,6 +3,74 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
+a, button {
   color: #00B7FF;
+}
+
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+
+}
+
+/* auth */
+.container_index_btn {
+  display: flex;
+  justify-content: center;
+}
+
+.click_btn_index {
+  text-decoration: none;
+  border: 1px solid black;
+  border-radius: 5px;
+  width: 150px;
+  padding: 5px;
+  display: flex;
+  justify-content: center;
+}
+
+.container_auth {
+  display: flex;
+  justify-content: center;
+}
+
+/* admin-panel */
+.admin_container {
+  display: flex;
+  flex-direction: column;
+}
+.admin_top {
+  position: relative;
+}
+.admin_container .header_admin {
+}
+
+.admin_middle {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn_logout_admin {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.admin_content {
+  margin-left: 20px;
+  width: 80%;
+}
+
+.admin_options {
+  width: 20%;
+}
+
+.admin_options form button {
+  cursor: pointer;
+  font-size: 14px;
+  background-color: transparent;
+  border: 0;
+  text-decoration: #00B7FF;
+  text-decoration: underline;
 }

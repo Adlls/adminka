@@ -1,0 +1,60 @@
+<div class="admin_container">
+
+    <div class="admin_top">
+        <div class="header_admin clearfix">
+            <h2>Welcome {{name}}!</h2>
+            <p>{{role}}</p>
+        </div>
+
+        <div class="btn_logout_admin clearfix">
+            <a href="/auth/logout/" class="btn_logout">Выйти</a>
+        </div>
+    </div>
+
+    <div class="admin_middle">
+        <div class="admin_options">
+            <ul>
+                <li>
+                {{#if options.isAdmin }}
+                    <form method="get">
+                         <input type="hidden" name="getUsers" value=true />
+                        <button type="submit">Показть юзеров</button>
+                    </form>
+                </li>
+                    {{else}}
+                    <li><a href="http://localhost:3000/admin?getUsers=true">Показать юзеров</a></li>
+                {{/if}}
+
+            </ul>
+        </div>
+
+        <div class="admin_content">
+            {{#if options.getUsers}}
+                {{options.getUsers}}
+            {{/if}}
+        </div>
+    </div>
+</div>
+
+<script>
+/*
+    document.getElementById("getUsers").addEventListener("click", function (e) {
+        e.preventDefault();
+        // получаем данные формы
+        let registerForm = document.forms["getUser"];
+        let userName = registerForm.elements["userName"].value;
+        let userAge = registerForm.elements["userAge"].value;
+        // сериализуем данные в json
+        let user = JSON.stringify({userName: userName, userAge: userAge});
+        let request = new XMLHttpRequest();
+        // посылаем запрос на адрес
+        request.open("GET", "/user", true);
+        request.setRequestHeader("Content-Type", "application/json");
+        request.addEventListener("load", function () {
+            let receivedUser = JSON.parse(request.response);
+            console.log(receivedUser.userName, "-", receivedUser.userAge);   // смотрим ответ сервера
+        });
+        request.send(user);
+    });
+    */
+</script>

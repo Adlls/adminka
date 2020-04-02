@@ -1,21 +1,56 @@
 var express = require('express');
+const app = express();
 var router = express.Router();
 var users = require('../controllers/users');
 var user  = users.getUserDoc();
+var jwt = require('jsonwebtoken');
 
-/* GET home page. */
-/*
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-*/
+
+let isAuth = async (req, res, next) => {
+  //req.headers['From-Middleware'] = 1;
+  const cookies = req.cookies;
+  const payload = jwt.verify(cookies.user, 'privateKey');
+  const id = payload.id;
+  const refrashToken = cookies.token;
+  let userFound;
+  const userDocs =  await user.getById(id);
+  for (let i in userDocs) {
+    if (userDocs[i]["_id"] + "" == id) {
+      userFound = userDocs[i];
+      break;
+    }
+  }
+  if (userFound["token"] != refrashToken) res.status(403).send("denied access");
+  else
+    next();
+};
+
+let isAdmin = async (req, res, next) => {
+  const cookies = req.cookies;
+  const payload = jwt.verify(cookies.user, 'privateKey');
+  const id = payload.id;
+  const refrashToken = cookies.token;
+  let userFound;
+  const userDocs =  await user.getById(id);
+  for (let i in userDocs) {
+    if (userDocs[i]["_id"] + "" == id) {
+      userFound = userDocs[i];
+      break;
+    }
+  }
+  if (userFound["role"] !== 'admin') res.status(403).send("denied access");
+  else
+    next();
+}
+
+router.use(isAuth);
 
 //find all
 router.get('/', async (req, res, next) => {
-  await user.getAll().then((value) => {
-    console.log(value);
-    res.send(value);
-  });
+
+  let userDocs = await user.getAll();
+  //res.send(userDocs);
+
 });
 
 
@@ -28,7 +63,7 @@ router.get('/:id', async (req, res, next) => {
 });
 
 //delete by id
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', isAdmin, async (req, res, next) => {
   await user.remove(req.params["id"]).then((value) => {
     console.log(value);
     res.send(value);
@@ -36,7 +71,7 @@ router.delete('/:id', async (req, res, next) => {
 });
 
 //add
-router.post('/', async (req, res, next) => {
+router.post('/', isAdmin, async (req, res, next) => {
   let body = req.body;
   let insertDataset = {
     name: body.name,
@@ -53,7 +88,7 @@ router.post('/', async (req, res, next) => {
 });
 
 //update
-router.put('/:id', async (req, res, next) => {
+router.put('/:id', isAdmin, async (req, res, next) => {
   let body = req.body;
   let updateDataset = {
     name: body.name,
