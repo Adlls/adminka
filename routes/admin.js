@@ -27,13 +27,17 @@ app.use(bodyParser.json());
 }
 
 async function getUsers(req, res, userFound) {
-    await requestToApiUsers(req, res, userFound,'/users', 'GET', async (chunk) => {
-
+     let data = [];
+     await requestToApiUsers(req, res, userFound,'/users', 'GET', async (chunk) => {
+        data.push(chunk);
+        let binary = Buffer.concat(data);
+        let encodeChunk = binary.toString('utf8');
+        let getUsers = JSON.parse(encodeChunk);
         res.render('admin-panel', {
             name: userFound["name"],
             role: userFound["role"],
             phone: userFound["phone"],
-            users: null
+            users: getUsers
         });
     });
 

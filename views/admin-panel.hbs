@@ -32,9 +32,6 @@
 
         <div class="admin_content">
             {{#if users}}
-                {{users}}
-
-
                 <table>
                     <th>Id</th>
                     <th>Name</th>
@@ -42,9 +39,17 @@
                     <th>Email</th>
                     <th>Phone</th>
                     <th>Role</th>
-                    <tr>
-                        <td></td>
-                    </tr>
+                        {{#each users}}
+                            <tr>
+                                <td>{{this._id}}</td>
+                                <td>{{this.name}}</td>
+                                <td>{{this.login}}</td>
+                                <td>{{this.email}}</td>
+                                <td>{{this.phone}}</td>
+                                <td>{{this.role}}</td>
+                            </tr>
+                        {{/each}}
+
                 </table>
             {{/if}}
         </div>
