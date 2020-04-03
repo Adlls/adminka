@@ -14,23 +14,38 @@
     <div class="admin_middle">
         <div class="admin_options">
             <ul>
-                <li>
-                {{#if options.isAdmin }}
-                    <form id="getUsers">
-                         <input type="hidden" name="getAll" value=true />
-                        <button type="submit">Показть юзеров</button>
-                    </form>
-                </li>
-                    {{else}}
-                    <li><a href="http://localhost:3000/admin?getUsers=true">Показать юзеров</a></li>
-                {{/if}}
+                <form id="getUsers">
+                        <li>
+                             <input type="hidden" name="getAll" value=true />
+                            <button type="submit">view users</button>
+                       </li>
 
+                        <li>
+                            <input type="hidden" name="addUser" value=true />
+                            <button type="submit">add user</button>
+                        </li>
+
+                   <!-- <li><a href="http://localhost:3000/admin?getUsers=true">Показать юзеров</a></li> -->
+                </form>
             </ul>
         </div>
 
         <div class="admin_content">
-            {{#if options.getUsers}}
-                {{options.getUsers}}
+            {{#if users}}
+                {{users}}
+
+
+                <table>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Login</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Role</th>
+                    <tr>
+                        <td></td>
+                    </tr>
+                </table>
             {{/if}}
         </div>
     </div>

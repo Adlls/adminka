@@ -16,7 +16,7 @@ let isAuth = async (req, res, next) => {
   let userFound;
   const userDocs =  await user.getById(id);
   for (let i in userDocs) {
-    if (userDocs[i]["_id"] + "" == id) {
+    if (userDocs[i]["_id"] + "" === id) {
       userFound = userDocs[i];
       break;
     }
@@ -65,7 +65,7 @@ router.get('/:id', async (req, res, next) => {
 router.delete('/:id', isAdmin, async (req, res, next) => {
   await user.remove(req.params["id"]).then((value) => {
     console.log(value);
-    res.send(value);
+    res.send(JSON.stringify(value));
   });
 });
 
