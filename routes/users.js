@@ -3,12 +3,13 @@ const app = express();
 var router = express.Router();
 var users = require('../controllers/users');
 var user  = users.getUserDoc();
-var jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 
 
 let isAuth = async (req, res, next) => {
   //req.headers['From-Middleware'] = 1;
-  const cookies = req.cookies;
+
+  const cookies = req.headers;
   const payload = jwt.verify(cookies.user, 'privateKey');
   const id = payload.id;
   const refrashToken = cookies.token;
@@ -47,10 +48,8 @@ router.use(isAuth);
 
 //find all
 router.get('/', async (req, res, next) => {
-
   let userDocs = await user.getAll();
-  //res.send(userDocs);
-
+  res.send(userDocs);
 });
 
 
