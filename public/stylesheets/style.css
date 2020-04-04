@@ -78,3 +78,14 @@ table tr td {
   text-decoration: #00B7FF;
   text-decoration: underline;
 }
+
+ ul li {
+   margin: 5px;
+ }
+
+ form[name="updateUser"] {
+    display: none;
+}
+ #addUser {
+     display: none;
+ }

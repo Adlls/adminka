@@ -56,7 +56,7 @@ router.get('/', async (req, res, next) => {
 router.get('/:id', async (req, res, next) => {
   await user.getById(req.params["id"]).then((value) => {
     console.log(value);
-    res.send(value);
+    res.send(JSON.stringify(value));
   });
 });
 

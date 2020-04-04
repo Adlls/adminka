@@ -3,7 +3,7 @@
     <div class="admin_top">
         <div class="header_admin clearfix">
             <h2>Welcome {{name}}!</h2>
-            <p>{{role}}</p>
+            <p class="role">{{role}}</p>
         </div>
 
         <div class="btn_logout_admin clearfix">
@@ -15,36 +15,36 @@
         <div class="admin_options">
             <ul>
                         <li>
-                                <button type="submit" id="btn_view">view users</button>
+                            <button type="submit" id="btn_view">view users</button>
                        </li>
-
+                {{#if isAdmin}}
                         <li>
-                                <button id="clear_btnAdd">add user</button>
-
+                            <button id="clear_btnAdd">add user</button>
                         </li>
-                </form>
+                {{/if}}
             </ul>
         </div>
 
         <div class="admin_content">
 
-            <form id="addUser", name="addUser">
+            <form id="addUser" name="addUser">
                 <label for="name">Name: </label> <br>
-                <input name="name" type="text" id="name"> <br>
+                <input name="name" type="text" id="name" required> <br>
                 <label for="login">Login: </label> <br>
-                <input name="login" type="text" id="login"> <br>
+                <input name="login" type="text" id="login" required> <br>
                 <label for="pass">Password: </label> <br>
-                <input name="pass" type="password" id="password"> <br>
+                <input name="pass" type="password" id="password" required> <br>
                 <label for="email">Email: </label> <br>
-                <input name="email" type="email" id="email"> <br>
+                <input name="email" type="email" id="email" required> <br>
                 <label for="phone">Phone: </label> <br>
-                <input name="phone" type="tel" id="phone"> <br>
+                <input name="phone" type="tel" id="phone" required> <br>
                 <label for="role">Role: </label> <br>
-                <input name="role" type="role" id="role"> <br>
+                <input name="role" type="role" id="role" required> <br>
                 <button type="hidden" name="addUser" value=true id="btn_add">Добавить</button>
             </form>
 
             {{#if users}}
+
                 <table class="getTableUsers">
                     <th>Id</th>
                     <th>Name</th>
@@ -52,6 +52,40 @@
                     <th>Email</th>
                     <th>Phone</th>
                     <th>Role</th>
+
+                    <script>
+                            $( ".delete_btn" ).click(function() {
+                                $.ajax({
+                                    url: "http://localhost:3000/users/"+$(this).data("id"),
+                                    contentType: "application/json",
+                                    method: "DELETE",
+                                    success:  function(data)  {
+                                        alert("Success remove");
+                                        $(".getTableUsers").remove();
+                                    }
+                                });
+                            });
+
+                            $(".update_btn").click(function () {
+                                $("form[name=\"updateUser\"]").css("display", "block");
+                                let form = document.forms["updateUser"];
+                                form.elements["updateUser"].value = $(this).data("id");
+                                $.ajax({
+                                    url: "http://localhost:3000/users/" + $(this).data("id"),
+                                    type: "GET",
+                                    contentType: "application/json",
+                                    success: function (user) {
+                                        user = JSON.parse(user);
+                                        form.elements["name"].value = user[0].name;
+                                        form.elements["login"].value = user[0].login;
+                                        form.elements["pass"].value = user[0].pass;
+                                        form.elements["email"].value = user[0].email;
+                                        form.elements["phone"].value = user[0].phone;
+                                        form.elements["role"].value = user[0].role;
+                                    }
+                                });
+                            });
+                    </script>
                         {{#each users}}
                             <tr>
                                 <td>{{this._id}}</td>
@@ -60,34 +94,32 @@
                                 <td>{{this.email}}</td>
                                 <td>{{this.phone}}</td>
                                 <td>{{this.role}}</td>
+                                <td>
+                                    <button data-id="{{this._id}}" class="delete_btn">Удалить</button>
+                                    <button data-id="{{this._id}}" class="update_btn">Изменить</button>
+                                </td>
                             </tr>
+
                         {{/each}}
 
                 </table>
             {{/if}}
+
+            <form name="updateUser">
+                <label for="name">Name: </label> <br>
+                <input name="name" type="text" id="name" required> <br>
+                <label for="login">Login: </label> <br>
+                <input name="login" type="text" id="login" required> <br>
+                <label for="pass">Password: </label> <br>
+                <input name="pass" type="password" id="password" required> <br>
+                <label for="email">Email: </label> <br>
+                <input name="email" type="email" id="email" required> <br>
+                <label for="phone">Phone: </label> <br>
+                <input name="phone" type="tel" id="phone" required> <br>
+                <label for="role">Role: </label> <br>
+                <input name="role" type="role" id="role" required> <br>
+                <button type="hidden" name="updateUser" value=true id="btn_update">Изменить</button>
+            </form>
         </div>
     </div>
 </div>
-
-<script>
-/*
-    document.getElementById("getUsers").addEventListener("click", function (e) {
-        e.preventDefault();
-        // получаем данные формы
-        let registerForm = document.forms["getUser"];
-        let userName = registerForm.elements["userName"].value;
-        let userAge = registerForm.elements["userAge"].value;
-        // сериализуем данные в json
-        let user = JSON.stringify({userName: userName, userAge: userAge});
-        let request = new XMLHttpRequest();
-        // посылаем запрос на адрес
-        request.open("GET", "/user", true);
-        request.setRequestHeader("Content-Type", "application/json");
-        request.addEventListener("load", function () {
-            let receivedUser = JSON.parse(request.response);
-            console.log(receivedUser.userName, "-", receivedUser.userAge);   // смотрим ответ сервера
-        });
-        request.send(user);
-    });
-    */
-</script>

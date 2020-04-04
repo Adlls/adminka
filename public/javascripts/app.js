@@ -1,6 +1,21 @@
 
+function renderViewUsers(data) {
+    $(".getTableUsers").remove();
+    let render = $(data);
+    let found = $('.getTableUsers', render);
+    $('.admin_content').append(found);
+}
+
+function isAdmin() {
+    if ($(".role").text() !== "admin") {
+        $(".delete_btn").remove();
+        $(".update_btn").remove();
+    }
+}
+
 document.getElementById("btn_view").addEventListener("click", function (e) {
     $('#addUser').css('display', 'none');
+    $('form[name="updateUser"]').css('display', 'none');
     e.preventDefault();
     $.ajax({
         url: "users/",
@@ -13,9 +28,8 @@ document.getElementById("btn_view").addEventListener("click", function (e) {
                 data: {users: data},
                 method: "GET",
                 success:  function(data) {
-                    let render = $(data);
-                    let found = $('.getTableUsers', render);
-                    $('.admin_content').append(found);
+                    renderViewUsers(data);
+                    isAdmin();
                 }
             });
 
@@ -27,6 +41,7 @@ document.getElementById("clear_btnAdd").addEventListener("click", function (e) {
     e.preventDefault();
     $('table.getTableUsers').css('display', 'none');
     $('#addUser').css('display', 'block');
+    $('form[name="updateUser"]').css('display', 'none');
 });
 
 document.getElementById("btn_add").addEventListener("click", function (e) {
@@ -38,7 +53,6 @@ document.getElementById("btn_add").addEventListener("click", function (e) {
     let email = registerForm.elements["email"].value;
     let phone = registerForm.elements["phone"].value;
     let role = registerForm.elements["role"].value;
-    alert('hi');
     $.ajax({
         url: "http://localhost:3000/users/",
         contentType: "application/json",
@@ -56,6 +70,38 @@ document.getElementById("btn_add").addEventListener("click", function (e) {
         }
     });
 });
+
+document.getElementById("btn_update").addEventListener("click", function (e) {
+    e.preventDefault();
+    let registerForm = document.forms["updateUser"];
+    let userName = registerForm.elements["name"].value;
+    let login = registerForm.elements["login"].value;
+    let pass = registerForm.elements["pass"].value;
+    let email = registerForm.elements["email"].value;
+    let phone = registerForm.elements["phone"].value;
+    let role = registerForm.elements["role"].value;
+    let id = registerForm.elements["updateUser"].value;
+
+    $.ajax({
+        url: "http://localhost:3000/users/" + id,
+        contentType: "application/json",
+        method: "PUT",
+        data: JSON.stringify({
+            name: userName,
+            login: login,
+            pass: pass,
+            email: email,
+            phone: phone,
+            role: role
+        }),
+        success:  function(data)  {
+            alert('Succsess update');
+        }
+    });
+
+});
+
+
 /*
 document.getElementById("btn_add").addEventListener("click", function (e) {
     e.preventDefault();
