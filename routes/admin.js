@@ -40,10 +40,22 @@ async function getUsers(req, res, userFound) {
             users: getUsers
         });
     });
-
-
 }
 
+async function addUsers(req, res, userFound, userAdd) {
+    let data = [];
+    await requestToApiUsers(req, res, userFound,'/users', 'POST', async (chunk) => {
+        data.push(chunk);
+        let binary = Buffer.concat(data);
+        let encodeChunk = binary.toString('utf8');
+        let getUser = JSON.parse(encodeChunk);
+        res.render('admin-panel', {
+            name: userFound["name"],
+            role: userFound["role"],
+            phone: userFound["phone"],
+        });
+    });
+}
 
 
 router.get('/', jsonParser, async (req, res) => {
@@ -57,21 +69,27 @@ router.get('/', jsonParser, async (req, res) => {
     let userFound;
 
    for (let i in userDocs) {
-       if (userDocs[i]["_id"] + "" == id) {
+       if (userDocs[i]["_id"] + "" === id) {
            userFound = userDocs[i];
            break;
        }
    }
    if (!userFound) res.status(403).redirect(`../auth`);
 
-    if (userFound['role'] === 'admin')
-
    if (userFound["token"] !== refrashToken) {
        res.status(403).redirect(`../auth`);
    }
 
-   if (Boolean(req.query.getAll)) {
+   console.log(req.query);
+
+/*
+   if (Boolean(req.query.login)) {
       await getUsers(req, res, userFound);
+   }
+   else if((Boolean(req.query.getAll))) {
+       console.log("add user");
+
+       await addUsers(req, res, req.query);
    }
    else {
        res.render('admin-panel', {
@@ -80,7 +98,14 @@ router.get('/', jsonParser, async (req, res) => {
            phone: userFound["phone"],
        })
    }
+*/
 
+    res.render('admin-panel', {
+        name: userFound["name"],
+        role: userFound["role"],
+        phone: userFound["phone"],
+        users: req.query.users
+    })
 
 });
 

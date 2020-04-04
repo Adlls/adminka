@@ -14,25 +14,38 @@
     <div class="admin_middle">
         <div class="admin_options">
             <ul>
-                <form id="getUsers">
                         <li>
-                             <input type="hidden" name="getAll" value=true />
-                            <button type="submit">view users</button>
+                                <button type="submit" id="btn_view">view users</button>
                        </li>
 
                         <li>
-                            <input type="hidden" name="addUser" value=true />
-                            <button type="submit">add user</button>
-                        </li>
+                                <button id="clear_btnAdd">add user</button>
 
-                   <!-- <li><a href="http://localhost:3000/admin?getUsers=true">Показать юзеров</a></li> -->
+                        </li>
                 </form>
             </ul>
         </div>
 
         <div class="admin_content">
+
+            <form id="addUser", name="addUser">
+                <label for="name">Name: </label> <br>
+                <input name="name" type="text" id="name"> <br>
+                <label for="login">Login: </label> <br>
+                <input name="login" type="text" id="login"> <br>
+                <label for="pass">Password: </label> <br>
+                <input name="pass" type="password" id="password"> <br>
+                <label for="email">Email: </label> <br>
+                <input name="email" type="email" id="email"> <br>
+                <label for="phone">Phone: </label> <br>
+                <input name="phone" type="tel" id="phone"> <br>
+                <label for="role">Role: </label> <br>
+                <input name="role" type="role" id="role"> <br>
+                <button type="hidden" name="addUser" value=true id="btn_add">Добавить</button>
+            </form>
+
             {{#if users}}
-                <table>
+                <table class="getTableUsers">
                     <th>Id</th>
                     <th>Name</th>
                     <th>Login</th>

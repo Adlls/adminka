@@ -70,7 +70,7 @@ table tr td {
   width: 20%;
 }
 
-.admin_options form button {
+ button {
   cursor: pointer;
   font-size: 14px;
   background-color: transparent;

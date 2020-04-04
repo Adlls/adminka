@@ -8,8 +8,7 @@ const jwt = require('jsonwebtoken');
 
 let isAuth = async (req, res, next) => {
   //req.headers['From-Middleware'] = 1;
-
-  const cookies = req.headers;
+  const cookies =  req.cookies.user == null ? req.headers : req.cookies;
   const payload = jwt.verify(cookies.user, 'privateKey');
   const id = payload.id;
   const refrashToken = cookies.token;
@@ -71,19 +70,10 @@ router.delete('/:id', isAdmin, async (req, res, next) => {
 
 //add
 router.post('/', isAdmin, async (req, res, next) => {
-  let body = req.body;
-  let insertDataset = {
-    name: body.name,
-    login: body.login,
-    pass: body.pass,
-    email: body.email,
-    phone: body.phone,
-    role: body.role
-  };
-  await user.create(insertDataset).then((value) => {
+  await user.create(req.body).then((value) => {
     console.log(value);
   });
-  res.send(insertDataset);
+  res.send(req.body);
 });
 
 //update
